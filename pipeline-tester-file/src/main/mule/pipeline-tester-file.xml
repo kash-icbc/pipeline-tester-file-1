@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="b3dadf74-19aa-4ff6-8167-9aaaceed8521" timeBetweenSizeCheckUnit="MINUTES" >
+		<file:connection workingDir="C:\DEV\TOOLS\Mulesoft\interfaces\input" />
+	</file:config>
+	<file:config name="File_Config_Output" doc:name="File Config" doc:id="8fd5182c-4de0-49bd-9279-28b9116cfbe0" >
+		<file:connection workingDir="C:\DEV\TOOLS\Mulesoft\interfaces\output" />
+	</file:config>
+	<file:config name="File_Config1" doc:name="File Config" doc:id="49c03cdc-3417-4eb4-83d3-c10a8f157bd4" >
+		<file:connection workingDir="C:\DEV\TOOLS\Mulesoft\interfaces\input" />
+	</file:config>
+	<sub-flow name="dw-json-to-xml" doc:id="f60d5d8f-e3ec-4120-ac36-e09b5f8f9cb7" >
+		<ee:transform doc:name="Transform Message" doc:id="c34f949e-9e12-4209-a711-9e1912db0001">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	glossary: {
+		title: payload.glossary.title,
+		GlossDiv: {
+			title: payload.glossary.GlossDiv.title,
+			GlossList: {
+				GlossEntry @(ID: payload.glossary.GlossDiv.GlossList.GlossEntry.ID , SortAs: payload.glossary.GlossDiv.GlossList.GlossEntry.SortAs): {
+					GlossTerm: payload.glossary.GlossDiv.GlossList.GlossEntry.GlossTerm,
+					Acronym: payload.glossary.GlossDiv.GlossList.GlossEntry.Acronym,
+					Abbrev: payload.glossary.GlossDiv.GlossList.GlossEntry.Abbrev,
+					GlossDef: payload.glossary.GlossDiv.GlossList.GlossEntry.GlossDef,
+					GlossSee: payload.glossary.GlossDiv.GlossList.GlossEntry.GlossSee
+				}
+			}
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<flow name="pipeline-tester-fileFlow" doc:id="6a4d6157-b8b3-4c27-857a-f4dc735958c2" >
+		<file:listener doc:name="On New or Updated File" doc:id="92151a03-52ca-43c5-9abc-5f95bcfcd47d" config-ref="File_Config1" directory="C:\DEV\TOOLS\Mulesoft\interfaces\input" moveToDirectory="C:\DEV\TOOLS\Mulesoft\interfaces\processed">
+			<scheduling-strategy >
+				<fixed-frequency frequency="10000"/>
+			</scheduling-strategy>
+		</file:listener>
+		<flow-ref doc:name="Flow Reference" doc:id="8a8ce24c-537d-444c-8f0e-331c9a1f8cd8" name="dw-json-to-xml" />
+		<file:write doc:name="Write" doc:id="37f8bca5-16b4-45a1-ba7f-92f70d8bf44e" config-ref="File_Config_Output" path="OUTPUT.xml" />
+	</flow>
+</mule>
