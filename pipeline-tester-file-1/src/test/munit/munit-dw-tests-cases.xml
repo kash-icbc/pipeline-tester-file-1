@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="munit-dw-tests.xml" />
+	<munit:test name="dw-tests-1" description="Test" doc:id="64a92eda-b0cd-408b-93b4-316f720b0b48" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="3cb80581-0ed1-4379-b95c-6d333ff47784" cloneOriginalEvent="true">
+				<munit:payload value='{"glossary": {"title": "example glossary","GlossDiv": {"title": "S","GlossList": {"GlossEntry": {"ID": "SGML","SortAs": "SGML","GlossTerm": "Standard Generalized Markup Language","Acronym": "SGML","Abbrev": "ISO 8879:1986","GlossDef": {"para": "A meta-markup language, used to create markup languages such as DocBook.","GlossSeeAlso": ["GML", "XML"]},"GlossSee": "markup"}}}}}' mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to dw-json-to-xml" doc:id="34bd053f-1ac3-428f-bec0-443f4e59d819" name="dw-json-to-xml"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="1126e810-8a23-4eeb-a830-d289d459b304" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+		
+	</munit:test>
+		<munit:test name="dw-tests-2" description="Test" doc:id="73f76a0d-3562-4676-9000-894d75c022b3" ignore="true">
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="285e26f2-8b7e-4f1f-a207-635ce5d94100" cloneOriginalEvent="true">
+				<munit:payload value='{"glossary": {"title": "example glossary","GlossDiv": {"title": "S","GlossList": {"GlossEntry": {"ID": "SGML","SortAs": "SGML","GlossTerm": "Standard Generalized Markup Language","Acronym": "SGML","Abbrev": "ISO 8879:1986","GlossDef": {"para": "A meta-markup language, used to create markup languages such as DocBook.","GlossSeeAlso": ["GML", "XML"]},"GlossSee": "markup"}}}}}' mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to dw-json-to-xml" doc:id="acf2be62-be71-471b-ae49-4e5168e3ae04" name="dw-json-to-xml"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a8542d30-d565-45a7-ae8b-289699912797" expression="#[payload.glossary.title]" is='#[MunitTools::equalTo("example glossary")]' message="Glossary Title is not correct"/>
+		</munit:validation>
+		
+	</munit:test>
+
+
+</mule>

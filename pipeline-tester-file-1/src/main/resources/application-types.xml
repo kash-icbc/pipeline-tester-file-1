@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="pipeline_test_json" format="json">
+      <types:shape format="weave" example="examples/inputdata.json"><![CDATA[%dw 2.0
+type pipeline_test_json = {|
+  glossary: {|
+    title: String, 
+    GlossDiv: {|
+      title: String, 
+      GlossList: {|
+        GlossEntry: {|
+          ID: String, 
+          SortAs: String, 
+          GlossTerm: String, 
+          Acronym: String, 
+          Abbrev: String, 
+          GlossDef: {|
+            para: String, 
+            GlossSeeAlso: Array<String>
+          |}, 
+          GlossSee: String
+        |}
+      |}
+    |}
+  |}
+|} {"MetadataFormat": "json",
+"example": "{\"glossary\":{\"title\":\"example glossary\",\"GlossDiv\":{\"title\":\"S\",\"GlossList\":{\"GlossEntry\":{\"ID\":\"SGML\",\"SortAs\":\"SGML\",\"GlossTerm\":\"Standard Generalized Markup Language\",\"Acronym\":\"SGML\",\"Abbrev\":\"ISO 8879:1986\",\"GlossDef\":{\"para\":\"A meta-markup language, used to create markup languages such as DocBook.\",\"GlossSeeAlso\":[\"GML\",\"XML\"]},\"GlossSee\":\"markup\"}}}}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="pipeline_test_xml" format="xml">
+      <types:example format="xml" element="glossary" location="examples/output_example_2.xml"/>
+    </types:type>
+    <types:type name="metadata_1" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#c34f949e-9e12-4209-a711-9e1912db0001">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="pipeline_test_json"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="var1" type="metadata_1"/>
+        </types:variables>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="pipeline_test_xml"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#acf2be62-be71-471b-ae49-4e5168e3ae04">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="pipeline_test_xml"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a8542d30-d565-45a7-ae8b-289699912797">
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="expression" type="metadata_1"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+</types:mule>
