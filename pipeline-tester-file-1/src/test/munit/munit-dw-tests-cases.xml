@@ -16,7 +16,7 @@
 			<flow-ref doc:name="Flow-ref to dw-json-to-xml" doc:id="34bd053f-1ac3-428f-bec0-443f4e59d819" name="dw-json-to-xml"/>
 		</munit:execution>
 		<munit:validation >
-			<munit-tools:assert-that doc:name="Assert that" doc:id="1126e810-8a23-4eeb-a830-d289d459b304" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+			<munit-tools:assert-that doc:name="Assert that payload is not null" doc:id="1126e810-8a23-4eeb-a830-d289d459b304" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
 		</munit:validation>
 		
 	</munit:test>
