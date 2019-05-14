@@ -6,12 +6,12 @@ pipeline {
       steps {
         sh 'pwd'
       }
-
+	}
     stage('Run an ls command') { 
       steps {
         sh 'ls'
       }
-  
+    }
     stage('Unit Test') { 
       steps {
         sh 'mvn clean test'
