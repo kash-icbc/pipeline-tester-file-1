@@ -22,7 +22,7 @@ pipeline {
     
     stage('Unit Test') { 
       steps {
-        sh 'mvn clean test'
+        sh 'mvn -f ./pipeline-tester-file-1/pom.xml clean test'
       }
     }
   }
