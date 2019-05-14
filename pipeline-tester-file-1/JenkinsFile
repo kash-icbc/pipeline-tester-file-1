@@ -7,11 +7,19 @@ pipeline {
         sh 'pwd'
       }
 	}
+    stage('Run cd ') { 
+      steps {
+        sh 'cd pipeline-tester-file-1'
+      }
+    }
     stage('Run an ls command') { 
       steps {
         sh 'ls'
       }
     }
+
+    
+    
     stage('Unit Test') { 
       steps {
         sh 'mvn clean test'
