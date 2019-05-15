@@ -19,8 +19,14 @@ pipeline {
     }
 
     
+    stage('RUN: mvn test') { 
+      steps {
+        sh 'mvn -f ./pipeline-tester-file-1/pom.xml clean test'
+      }
+    }
     
-    stage('Unit Test') { 
+    
+    stage('RUN: mvn clean test') { 
       steps {
         sh 'mvn -f ./pipeline-tester-file-1/pom.xml clean test'
       }
