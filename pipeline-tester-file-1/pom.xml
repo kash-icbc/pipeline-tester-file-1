@@ -26,7 +26,7 @@
 		<mule.home>C:\DEV\TOOLS\Mulesoft\mule-standalone-4.1.1</mule.home>
 		<mule.runtime.community>true</mule.runtime.community>
 		<anypoint.username>kash_choudhury</anypoint.username>
-		<anypoint.password>kashMule01!</anypoint.password>
+		<anypoint.password>kashInyo01</anypoint.password>
 		<cloundhub.env>Development</cloundhub.env>
 		<anypoint.uri>https://anypoint.mulesoft.com</anypoint.uri>
 		<arm.target.name/>
